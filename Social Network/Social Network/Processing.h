@@ -154,3 +154,33 @@ void RemoveFriend(int **Spine, int UserNum, int UserA, int UserB) {
 
 #pragma endregion "Remove Friend"
 
+void RemoveUser(int **Spine,int &UserNum,int User) {
+	//remove user from Friends
+	for (int c = 0; c < UserNum; ++c) {
+		for (int x = 0; Spine[c][x] != -1; ++x) {
+			if (Spine[c][x] == User) {
+				RemoveFriend(Spine, UserNum, User, c);
+			}
+		}
+	}
+
+	//deletes user Array
+	delete[] Spine[User];
+
+	//shifts users backwards and overwrites user
+	for (int c = User + 1; c < UserNum; ++c) {
+		Spine[c - 1] = Spine[c];
+	}
+	--UserNum;
+
+	//Decrement Friendlists of moved user
+	for (int c = 0; c < UserNum; ++c) {
+		for (int x = 0; Spine[c][x] != -1; ++x) {
+			if (Spine[c][x] > User) {
+				--Spine[c][x];
+			}
+		}
+	}
+}
+
+

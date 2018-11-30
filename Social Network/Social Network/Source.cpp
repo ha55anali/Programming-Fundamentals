@@ -42,6 +42,12 @@ int main() {
 
 	cout << endl << "Check consistancy " << CheckConsistency(spine, UserNum) << endl;
 
+	RemoveUser(spine, UserNum, 5);
+
+	PrintStruct(spine, UserNum);
+
+	cout << endl << "Check consistancy " << CheckConsistency(spine, UserNum) << endl;
+
 	int dum;
 	cin >> dum;
 }
