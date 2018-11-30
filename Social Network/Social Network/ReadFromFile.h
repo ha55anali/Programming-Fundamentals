@@ -49,7 +49,7 @@ int * CreateNumArr(char LineOfText[]) {
 	return NumBuffToArr(LineOfText, NumCount);
 }
 
-int ** ReadFromFile(int &FriendNum) {
+int ** ReadFromFile(int &UserNum) {
 	ifstream file(FilePath);
 
 	//if file doesnt open
@@ -80,6 +80,6 @@ int ** ReadFromFile(int &FriendNum) {
 		++count;
 	}
 
-	FriendNum = LineCount;
+	UserNum = LineCount;
 	return spine;
 }

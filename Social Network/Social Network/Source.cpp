@@ -5,12 +5,12 @@
 
 using namespace std;
 
-void PrintStruct(int ** spine,int FriendNum) {
+void PrintStruct(int ** spine,int UserNum) {
 	if (spine == nullptr) {
 		cout << "Error in opening file";
 	}
 	else {
-		for (int c = 0; c < FriendNum; ++c) {
+		for (int c = 0; c < UserNum; ++c) {
 			cout << c << ":  ";
 			if (spine[c][0] == -1) cout << -1;
 			for (int x = 0; spine[c][x] != -1; ++x) {
@@ -23,17 +23,22 @@ void PrintStruct(int ** spine,int FriendNum) {
 
 int main() {
 
-	int FriendNum = 0;
-	int**spine = ReadFromFile(FriendNum);
+	int UserNum = 0;
+	int**spine = ReadFromFile(UserNum);
 
-	PrintStruct(spine, FriendNum);
+	PrintStruct(spine, UserNum);
 
-	cout << endl <<"Check consistancy "<< CheckConsistency(spine, FriendNum)<<endl;
+	cout << endl << "Check consistancy " << CheckConsistency(spine, UserNum) << endl;
 
-	AddUser(spine, FriendNum);
+	AddUser(spine, UserNum);
 
-	PrintStruct(spine, FriendNum);
-	cout << 1;
+	AddFriend(spine, UserNum, 3,5);
+
+	AddFriend(spine, UserNum, 3, 5);
+
+	PrintStruct(spine, UserNum);
+
+	cout << endl << "Check consistancy " << CheckConsistency(spine, UserNum) << endl;
 
 	int dum;
 	cin >> dum;
