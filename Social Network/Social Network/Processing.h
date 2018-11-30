@@ -85,14 +85,19 @@ void AddFriendToUser(int **Spine, int UserNum, int User, int UserToFriend) {
 }
 
 void AddFriend(int **Spine, int UserNum, int UserA, int UserB) {
-	if (ArrSearch(Spine[UserB], UserA) == 1) {
-		cout << endl<<"Friendship exists"<<endl;
+	if (UserA < UserNum && UserB < UserNum) {
+		if (ArrSearch(Spine[UserB], UserA) == 1) {
+			cout << endl << "Friendship exists" << endl;
+		}
+		else {
+			//function increases array size of UserA and stores in it UserB
+			AddFriendToUser(Spine, UserNum, UserA, UserB);
+			//function increases array size of UserB and stores in it UserA
+			AddFriendToUser(Spine, UserNum, UserB, UserA);
+		}
 	}
 	else {
-		//function increases array size of UserA and stores in it UserB
-		AddFriendToUser(Spine, UserNum, UserA, UserB);
-		//function increases array size of UserB and stores in it UserA
-		AddFriendToUser(Spine, UserNum, UserB, UserA);
+		cout << "Invalid Users entered";
 	}
 }
 
