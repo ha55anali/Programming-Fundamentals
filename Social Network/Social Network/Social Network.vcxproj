@@ -117,6 +117,13 @@
   <ItemGroup>
     <ClCompile Include="Source.cpp" />
   </ItemGroup>
+  <ItemGroup>
+    <ClInclude Include="ReadFromFile.h" />
+    <ClInclude Include="resource.h" />
+  </ItemGroup>
+  <ItemGroup>
+    <ResourceCompile Include="Social Network.rc" />
+  </ItemGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.targets" />
   <ImportGroup Label="ExtensionTargets">
   </ImportGroup>
