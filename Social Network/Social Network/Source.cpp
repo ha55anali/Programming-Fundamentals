@@ -1,7 +1,8 @@
 #include <iostream>
 
 #include "ReadFromFile.h"
-#include "Processing.h"
+#include "Data Manipulation.h"
+#include "Data Processing.h"
 
 using namespace std;
 
@@ -47,6 +48,8 @@ int main() {
 	PrintStruct(spine, UserNum);
 
 	cout << endl << "Check consistancy " << CheckConsistency(spine, UserNum) << endl;
+
+	PrintFriendOfFriends(spine, UserNum, 1);
 
 	int dum;
 	cin >> dum;

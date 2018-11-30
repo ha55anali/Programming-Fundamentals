@@ -26,7 +26,10 @@
     <ClInclude Include="ReadFromFile.h">
       <Filter>Header Files</Filter>
     </ClInclude>
-    <ClInclude Include="Processing.h">
+    <ClInclude Include="Data Manipulation.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="Data Processing.h">
       <Filter>Header Files</Filter>
     </ClInclude>
   </ItemGroup>

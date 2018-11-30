@@ -118,7 +118,8 @@
     <ClCompile Include="Source.cpp" />
   </ItemGroup>
   <ItemGroup>
-    <ClInclude Include="Processing.h" />
+    <ClInclude Include="Data Manipulation.h" />
+    <ClInclude Include="Data Processing.h" />
     <ClInclude Include="ReadFromFile.h" />
     <ClInclude Include="resource.h" />
   </ItemGroup>
