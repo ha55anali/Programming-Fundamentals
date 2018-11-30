@@ -3,6 +3,8 @@
 #include <algorithm>
 using namespace std;
 
+#pragma region "Misc Functions"
+
 bool ArrSearch(int * Arr, int key) {
 	for (int c = 0; Arr[c] != -1; ++c) {
 		if (Arr[c] == key) {
@@ -17,6 +19,16 @@ void CopyDoublePointerArr(int ** CopyTo,int ** CopyFrom,int CopyTill){
 		CopyTo[c] = CopyFrom[c];
 	}
 }
+
+void CopyArr(int * CopyTo, int * CopyFrom) {
+	int c = 0;
+	for (; CopyFrom[c] != -1; ++c) {
+		CopyTo[c] = CopyFrom[c];
+	}
+	CopyTo[c] = -1;
+}
+
+#pragma endregion "Misc Functions"
 
 bool CheckConsistency(int **spine,int UserNum) {
 	for (int row = 0; row < UserNum; ++row) {
@@ -48,13 +60,7 @@ void AddUser(int ** &Spine, int &UserNum) {
 	Spine = NewSpine;
 }
 
-void CopyArr(int * CopyTo, int * CopyFrom) {
-	int c = 0;
-	for (; CopyFrom[c] != -1;++c) {
-		CopyTo[c] = CopyFrom[c];
-	}
-	CopyTo[c] = -1;
-}
+#pragma region "Add Friend"
 
 void AddFriendToUser(int **Spine, int UserNum, int User, int UserToFriend) {
 	int FriendNum=0;
@@ -89,3 +95,57 @@ void AddFriend(int **Spine, int UserNum, int UserA, int UserB) {
 		AddFriendToUser(Spine, UserNum, UserB, UserA);
 	}
 }
+
+#pragma endregion "Add Friend"
+
+#pragma region "Remove Friend"
+
+int LocateUser(int * FriendList, int Friend) {
+	for (int c = 0; FriendList[c] != -1; ++c) {
+		if (FriendList[c] == Friend) {
+			return c;
+		}
+	}
+}
+
+void RemoveFriendFromUser(int **Spine, int UserNum, int User, int Friend) {
+	int FriendNum = 0;
+	for (int c = 0; Spine[User][c] != -1; ++c) {
+		++FriendNum;
+	}
+
+	int FriendLocation = LocateUser(Spine[User], Friend);
+
+	//overwrite the user to be deleted and shift back the friends
+	int c = FriendLocation + 1;
+	for (; Spine[User][c] != -1; ++c) {
+		Spine[User][c - 1] = Spine[User][c];
+	}
+	Spine[User][c - 1] = -1;
+
+	//create a new array and copy over the information from the old one
+	int * NewUserArr = new int[FriendNum];
+	--FriendNum;
+	CopyArr(NewUserArr, Spine[User]);
+
+	delete[] Spine[User];
+	Spine[User] = NewUserArr;
+}
+
+void RemoveFriend(int **Spine, int UserNum, int UserA, int UserB) {
+	if (UserA < UserNum && UserB < UserNum) {
+		if (ArrSearch(Spine[UserB], UserA) == 1) {
+			RemoveFriendFromUser(Spine, UserNum, UserA, UserB);
+			RemoveFriendFromUser(Spine, UserNum, UserB, UserA);
+		}
+		else {
+			cout << "Users are already not friends";
+		}
+	}
+	else {
+		cout << "Invalid Users entered";
+	}
+}
+
+#pragma endregion "Remove Friend"
+

@@ -34,7 +34,9 @@ int main() {
 
 	AddFriend(spine, UserNum, 3,5);
 
-	AddFriend(spine, UserNum, 3, 5);
+	PrintStruct(spine, UserNum);
+
+	RemoveFriend(spine, UserNum, 3, 8);
 
 	PrintStruct(spine, UserNum);
 
