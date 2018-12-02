@@ -6,7 +6,9 @@ using namespace std;
 #define FilePath "input.txt"
 #define FileLineLenght 1000
 
+//converts forwarded string to int array
 int * NumBuffToArr(char * LineOfText, int NumCount) {
+
 	int *ArrOfNum = new int[NumCount + 1]; //array to store numbers
 	char NumBuff[FileLineLenght]; //char array to store each number before conversion to int
 	int NumBuffCount = 0;
@@ -35,6 +37,7 @@ int * NumBuffToArr(char * LineOfText, int NumCount) {
 	return ArrOfNum;
 }
 
+//returns an int Array made from a string
 int * CreateNumArr(char LineOfText[]) {
 	//counts amount of integers in LineOfText
 	int NumCount = 0;

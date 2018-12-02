@@ -2,14 +2,27 @@
 #include <iostream>
 using namespace std;
 
+bool CheckFriend(int *FriendList, int UserChecked) {
+	for (int c = 0; FriendList[c] != -1; ++c) {
+		if (FriendList[c] == UserChecked) {
+			return 1;
+		}
+	}
+	return 0;
+}
+
 int * FindMutualFriends(int ** Spine, int UserNum, int UserA, int UserB) {
 	int *MutualFriends = new int[UserNum];
 
 	//Finds Mutual Friends
 	int MutualFriendCount = 0;
-	for (int c = 0; Spine[UserA][c] != -1; ++c) {
-		for (int x = 0; Spine[UserB][x] != -1; ++x) { //bin search?
+	for (int c = 0; Spine[UserA][c] != -1; ++c) { //traverses friends of UserA
+
+		//linear search to locate Spine[UserA][c] in friends of UserB
+		for (int x = 0; Spine[UserB][x] != -1; ++x) { //traverses friends of UserB
+
 			if (Spine[UserA][c] == Spine[UserB][x]) {
+
 				MutualFriends[MutualFriendCount] = Spine[UserA][c];
 				++MutualFriendCount;
 				break;
@@ -26,18 +39,12 @@ void PrintMutualFriends(int ** Spine, int UserNum, int UserA, int UserB) {
 	int * MutualFriends = FindMutualFriends(Spine, UserNum, UserA, UserB);
 
 	//Prints Mutual Friends
+	cout << "Mutual Friends are:" << endl;
 	for (int c = 0; MutualFriends[c]!=-1; ++c) {
+
 		cout << MutualFriends[c]<<" ";
 	}
-}
-
-bool CheckFriend(int *FriendList, int UserChecked) {
-	for (int c = 0; FriendList[c] != -1; ++c) {
-		if (FriendList[c] == UserChecked) {
-			return 1;
-		}
-	}
-	return 0;
+	cout << endl;
 }
 
 int * FindFriendsOfFriends(int ** Spine, int UserNum, int User) {
@@ -58,7 +65,7 @@ int * FindFriendsOfFriends(int ** Spine, int UserNum, int User) {
 			if (CheckFriend(FriendList, Spine[Friend][x]) == 0) { //checks if friend is already added
 				FriendList[UserFriendCount] = Spine[Friend][x];
 				++UserFriendCount;
-				FriendList[UserFriendCount] = -1;
+				FriendList[UserFriendCount] = -1; //make sure CheckFriend function works
 			}
 		}
 	}
@@ -70,14 +77,16 @@ int * FindFriendsOfFriends(int ** Spine, int UserNum, int User) {
 	return FriendList;
 }
 
-void PrintFriendOfFriends(int ** Spine, int UserNum, int User) {
+void PrintFriendsOfFriends(int ** Spine, int UserNum, int User) {
 	
 	int * FriendList=FindFriendsOfFriends(Spine, UserNum, User);
 
 	//outputs array
+	cout << "Friend of Friends are" << endl;
 	for (int c = 0; FriendList[c]!=-1; ++c) {
 		cout << FriendList[c] << " ";
 	}
+	cout<<endl;
 }
 
 int FindNumOfMutualFriends(int ** Spine, int UserNum, int UserA, int UserB) {
@@ -128,54 +137,62 @@ void FriendSuggestions(int ** Spine,int UserNum, int User) {
 	}
 
 }
-#undef NumFriendSuggestions 3
+#undef NumFriendSuggestions
 
 void MergeProfiles(int ** Spine, int &UserNum, int UserA, int UserB) {
 	//keeps user A and deleted user B
-	int *tempList=new int[UserNum];
 
-	int * MutualFriends = FindMutualFriends(Spine, UserNum, UserA, UserB);
+	//checks if both Users have no friends
+	if (!(Spine[UserA][0] == -1 && Spine[UserB][0] == -1)) {
 
-	int TempCount = 0;
-	for (; Spine[UserA][TempCount] != -1; ++TempCount) {
-		tempList[TempCount] = Spine[UserA][TempCount];
-	}
-	tempList[TempCount] = -1;
+		int *CombinedFriends = new int[UserNum];
+		CombinedFriends[0] = -1;
 
-
-	for (int x = 0; Spine[UserB][x] != -1; ++x) {
-		if (CheckFriend(tempList, Spine[UserB][x]) == 0) {
-			tempList[TempCount] = Spine[UserB][x];
-			++TempCount;
-			tempList[TempCount] = -1;
+		//stores friends of A in CombinedFriends
+		int Count = 0;
+		for (; Spine[UserA][Count] != -1; ++Count) {
+			CombinedFriends[Count] = Spine[UserA][Count];
 		}
-	}
 
-	sort(tempList, tempList + TempCount - 1);
+		//stores friends of B in Combines Friends
+		for (int x = 0; Spine[UserB][x] != -1; ++x) {
+			if (CheckFriend(CombinedFriends, Spine[UserB][x]) == 0) { //eliminates duplicates
+				CombinedFriends[Count] = Spine[UserB][x];
+				++Count;
+				CombinedFriends[Count] = -1; //ensure checkFriends work
+			}
+		}
 
-	tempList[TempCount] = -1;
-	++TempCount;
+		if (Count != 0) {
+			sort(CombinedFriends, CombinedFriends + Count - 1);
+		}
 
-	int * NewUserArr = new int[TempCount];
+		CombinedFriends[Count] = -1; //-1 is written again if UserB has some orignal friends
+		++Count;
 
-	CopyArr(NewUserArr, tempList);
+		int * NewUserArr = new int[Count];
+		CopyArr(NewUserArr, CombinedFriends);
 
-	delete[] Spine[UserA];
+		delete[] Spine[UserA];
+		Spine[UserA] = NewUserArr;
 
-	Spine[UserA] = NewUserArr;
+		//Mutual Friends will have both A and B in their lists
+		int * MutualFriends = FindMutualFriends(Spine, UserNum, UserA, UserB);
 
-	for (int c = 0; MutualFriends[c] != -1; ++c) {
-		RemoveFriendFromUser(Spine, UserNum, MutualFriends[c], UserB);
-	}
+		//removes B from Mutual Friends
+		for (int c = 0; MutualFriends[c] != -1; ++c) {
+			RemoveFriendFromUser(Spine, UserNum, MutualFriends[c], UserB);
+		}
 
-	for (int c = 0; c < UserNum; ++c) {
-		for (int x = 0; Spine[c][x] != -1; ++x) {
-			if (Spine[c][x] == UserB) {
-				Spine[c][x] = UserA;
+		//replaces B in the structure with A
+		for (int c = 0; c < UserNum; ++c) {
+			for (int x = 0; Spine[c][x] != -1; ++x) {
+				if (Spine[c][x] == UserB) {
+					Spine[c][x] = UserA;
+				}
 			}
 		}
 	}
-
 	RemoveUser(Spine, UserNum, UserB);
 }
 

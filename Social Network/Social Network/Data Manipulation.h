@@ -5,6 +5,7 @@ using namespace std;
 
 #pragma region "Misc Functions"
 
+//checks if value is found in int array
 bool ArrSearch(int * Arr, int key) {
 	for (int c = 0; Arr[c] != -1; ++c) {
 		if (Arr[c] == key) {
@@ -14,12 +15,14 @@ bool ArrSearch(int * Arr, int key) {
 	return 0;
 }
 
+//Copies values of one pointer array to another
 void CopyDoublePointerArr(int ** CopyTo,int ** CopyFrom,int CopyTill){
 	for (int c = 0; c < CopyTill; ++c) {
 		CopyTo[c] = CopyFrom[c];
 	}
 }
 
+//copies one array to another
 void CopyArr(int * CopyTo, int * CopyFrom) {
 	int c = 0;
 	for (; CopyFrom[c] != -1; ++c) {
@@ -30,6 +33,7 @@ void CopyArr(int * CopyTo, int * CopyFrom) {
 
 #pragma endregion "Misc Functions"
 
+//checks if structure is consistent
 bool CheckConsistency(int **spine,int UserNum) {
 	for (int row = 0; row < UserNum; ++row) {
 		for (int col = 0; spine[row][col] != -1; ++col) {
@@ -64,10 +68,12 @@ void AddUser(int ** &Spine, int &UserNum) {
 
 void AddFriendToUser(int **Spine, int UserNum, int User, int UserToFriend) {
 	int FriendNum=0;
+
 	//count number of friends of User
 	for (int c = 0; Spine[User][c] != -1; ++c) {
 		++FriendNum;
 	}
+
 	//creates a new array for user
 	int * NewUserArr = new int[FriendNum + 2];
 	CopyArr(NewUserArr, Spine[User]);
@@ -85,7 +91,6 @@ void AddFriendToUser(int **Spine, int UserNum, int User, int UserToFriend) {
 }
 
 void AddFriend(int **Spine, int UserNum, int UserA, int UserB) {
-	if (UserA < UserNum && UserB < UserNum) {
 		if (ArrSearch(Spine[UserB], UserA) == 1) {
 			cout << endl << "Friendship exists" << endl;
 		}
@@ -95,16 +100,13 @@ void AddFriend(int **Spine, int UserNum, int UserA, int UserB) {
 			//function increases array size of UserB and stores in it UserA
 			AddFriendToUser(Spine, UserNum, UserB, UserA);
 		}
-	}
-	else {
-		cout << "Invalid Users entered";
-	}
 }
 
 #pragma endregion "Add Friend"
 
 #pragma region "Remove Friend"
 
+//locates where in the array a friend is stored
 int LocateUser(int * FriendList, int Friend) {
 	for (int c = 0; FriendList[c] != -1; ++c) {
 		if (FriendList[c] == Friend) {
@@ -138,7 +140,6 @@ void RemoveFriendFromUser(int **Spine, int UserNum, int User, int Friend) {
 }
 
 void RemoveFriend(int **Spine, int UserNum, int UserA, int UserB) {
-	if (UserA < UserNum && UserB < UserNum) {
 		if (ArrSearch(Spine[UserB], UserA) == 1) {
 			RemoveFriendFromUser(Spine, UserNum, UserA, UserB);
 			RemoveFriendFromUser(Spine, UserNum, UserB, UserA);
@@ -146,10 +147,6 @@ void RemoveFriend(int **Spine, int UserNum, int UserA, int UserB) {
 		else {
 			cout << "Users are already not friends";
 		}
-	}
-	else {
-		cout << "Invalid Users entered";
-	}
 }
 
 #pragma endregion "Remove Friend"
@@ -183,4 +180,13 @@ void RemoveUser(int **Spine,int &UserNum,int User) {
 	}
 }
 
+void deleteStruct(int ** &Spine,int UserNum) {
+	//deallocates all pointers in the pointer array
+	for (int c = 0; c < UserNum; ++c) {
+		delete[] Spine[c];
+	}
 
+	//deallocates the pointer array
+	delete[] Spine;
+	Spine = nullptr;
+}

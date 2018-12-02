@@ -120,8 +120,10 @@
   <ItemGroup>
     <ClInclude Include="Data Manipulation.h" />
     <ClInclude Include="Data Processing.h" />
+    <ClInclude Include="Front End.h" />
     <ClInclude Include="ReadFromFile.h" />
     <ClInclude Include="resource.h" />
+    <ClInclude Include="Write to File.h" />
   </ItemGroup>
   <ItemGroup>
     <ResourceCompile Include="Social Network.rc" />

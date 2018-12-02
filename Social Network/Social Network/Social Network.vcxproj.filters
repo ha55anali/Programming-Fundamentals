@@ -32,6 +32,12 @@
     <ClInclude Include="Data Processing.h">
       <Filter>Header Files</Filter>
     </ClInclude>
+    <ClInclude Include="Front End.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="Write to File.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <ResourceCompile Include="Social Network.rc">
