@@ -51,6 +51,10 @@ int main() {
 
 	PrintFriendOfFriends(spine, UserNum, 1);
 
+	cout << endl;
+
+	FriendSuggestions(spine, UserNum, 1);
+
 	int dum;
 	cin >> dum;
 }
