@@ -22,6 +22,8 @@ void PrintStruct(int ** spine,int UserNum) {
 	}
 }
 
+
+
 int main() {
 
 	int UserNum = 0;
@@ -54,6 +56,13 @@ int main() {
 	cout << endl;
 
 	FriendSuggestions(spine, UserNum, 1);
+
+
+	MergeProfiles(spine, UserNum, 1, 2);
+
+	PrintStruct(spine, UserNum);
+
+	cout << endl << "Check consistancy " << CheckConsistency(spine, UserNum) << endl;
 
 	int dum;
 	cin >> dum;

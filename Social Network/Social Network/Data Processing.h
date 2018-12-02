@@ -130,3 +130,52 @@ void FriendSuggestions(int ** Spine,int UserNum, int User) {
 }
 #undef NumFriendSuggestions 3
 
+void MergeProfiles(int ** Spine, int &UserNum, int UserA, int UserB) {
+	//keeps user A and deleted user B
+	int *tempList=new int[UserNum];
+
+	int * MutualFriends = FindMutualFriends(Spine, UserNum, UserA, UserB);
+
+	int TempCount = 0;
+	for (; Spine[UserA][TempCount] != -1; ++TempCount) {
+		tempList[TempCount] = Spine[UserA][TempCount];
+	}
+	tempList[TempCount] = -1;
+
+
+	for (int x = 0; Spine[UserB][x] != -1; ++x) {
+		if (CheckFriend(tempList, Spine[UserB][x]) == 0) {
+			tempList[TempCount] = Spine[UserB][x];
+			++TempCount;
+			tempList[TempCount] = -1;
+		}
+	}
+
+	sort(tempList, tempList + TempCount - 1);
+
+	tempList[TempCount] = -1;
+	++TempCount;
+
+	int * NewUserArr = new int[TempCount];
+
+	CopyArr(NewUserArr, tempList);
+
+	delete[] Spine[UserA];
+
+	Spine[UserA] = NewUserArr;
+
+	for (int c = 0; MutualFriends[c] != -1; ++c) {
+		RemoveFriendFromUser(Spine, UserNum, MutualFriends[c], UserB);
+	}
+
+	for (int c = 0; c < UserNum; ++c) {
+		for (int x = 0; Spine[c][x] != -1; ++x) {
+			if (Spine[c][x] == UserB) {
+				Spine[c][x] = UserA;
+			}
+		}
+	}
+
+	RemoveUser(Spine, UserNum, UserB);
+}
+
