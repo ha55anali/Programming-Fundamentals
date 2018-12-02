@@ -152,7 +152,6 @@ void frontEnd(int ** &spine, int UserNum) {
 			break;
 
 		case 8:
-			cout << "Enter two users: " << endl;
 			User = InputUser(UserNum);
 			PrintFriendsOfFriends(spine, UserNum, User);
 			break;
@@ -193,6 +192,5 @@ void frontEnd(int ** &spine, int UserNum) {
 			cout << "invalid options. Enter choice again: ";
 			choice = InputNumber();
 		}
-
 	}
 }
