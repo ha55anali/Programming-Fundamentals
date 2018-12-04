@@ -1,13 +1,10 @@
 #pragma once
-
 #include <iostream>
-#include <Windows.h>
+
+#include "constants.h"
 
 using namespace std;
 
-#define BoardLenght 8
-#define white 1
-#define black 0
 
 void initLastRow(char Board[][BoardLenght], bool Player) {
 	int Temp;

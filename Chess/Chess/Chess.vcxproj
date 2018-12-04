@@ -118,6 +118,7 @@
     <ClCompile Include="Source.cpp" />
   </ItemGroup>
   <ItemGroup>
+    <ClInclude Include="constants.h" />
     <ClInclude Include="init Board.h" />
     <ClInclude Include="Print Board.h" />
   </ItemGroup>

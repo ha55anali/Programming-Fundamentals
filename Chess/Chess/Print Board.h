@@ -1,4 +1,10 @@
 #pragma once
+#include <iostream>
+#include <Windows.h>
+
+#include "constants.h"
+
+using namespace std;
 
 void PrintRow(char Board[][BoardLenght], int RowNum, int cellheight, int cellwidth) {
 	HANDLE hConsole = GetStdHandle(STD_OUTPUT_HANDLE);
