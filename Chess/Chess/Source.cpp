@@ -34,14 +34,47 @@ void InputCordinate() {
 	}
 }
 
-bool PawnMove(char Board[][BoardLenght], int Start[], int End[]) {
-	bool CheckMove[BoardLenght][BoardLenght];
+int SquareCheck(char Board[][BoardLenght], int Point[], bool Player) {
+	char Piece = Board[Point[0]][Point[1]];
 
-	if (Board[Start[0] + 1][Start[1]] == ' ') {
-		CheckMove[Start[0] + 1][Start[1]] == 1;
+	if (Piece == ' '){
+		return 0;
 	}
 
-	if (Start[1]==)
+	if (Piece >= 'a' && Piece <= 'z') {
+		if (Player == white) {
+			return 1;
+		}
+		return -1;
+	}
+	else {
+		if (Player == black) {
+			return 1;
+		}
+		return -1;
+	}
+}
+
+bool PawnMove(char Board[][BoardLenght], int Start[], int End[],bool Player) {
+	bool CheckMove[BoardLenght][BoardLenght];
+
+	int Temp[2];
+
+	if (Start[1] == 1) {
+		Temp[0] =Start[0]+2;
+		Temp[1] = Start[1];
+		if (SquareCheck(Board, Temp, Player) ==0 ) {
+			CheckMove[Temp[0]][Temp[1]]==1;
+		}
+	}
+
+	Temp[0] = Start[0]+1;
+	Temp[1] = Start[1];
+	if (SquareCheck(Board, Temp, Player) == 0) {
+		CheckMove[Temp[0]][Temp[1]] == 1;
+	}
+
+	return 0;
 }
 
 int main() {
@@ -53,7 +86,12 @@ int main() {
 
 	PrintBoard(Board);
 
-	InputCordinate();
+	/*InputCordinate();*/
+
+	int start[2] = { 1,1 };
+	int end[2] = { 3,1 };
+	
+	PawnMove(Board, start, end, black);
 
 	int dum;
 	cin >> dum;

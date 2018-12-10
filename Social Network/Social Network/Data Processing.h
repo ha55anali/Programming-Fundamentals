@@ -40,6 +40,10 @@ void PrintMutualFriends(int ** Spine, int UserNum, int UserA, int UserB) {
 
 	//Prints Mutual Friends
 	cout << "Mutual Friends are:" << endl;
+
+	if (MutualFriends[0] == -1) {
+		cout << "Please add more friends";
+	}
 	for (int c = 0; MutualFriends[c]!=-1; ++c) {
 
 		cout << MutualFriends[c]<<" ";
@@ -83,6 +87,10 @@ void PrintFriendsOfFriends(int ** Spine, int UserNum, int User) {
 
 	//outputs array
 	cout << "Friend of Friends are" << endl;
+	if (FriendList[0] == -1) {
+		cout << "Please add more friends";
+	}
+
 	for (int c = 0; FriendList[c]!=-1; ++c) {
 		cout << FriendList[c] << " ";
 	}
@@ -132,6 +140,7 @@ void FriendSuggestions(int ** Spine,int UserNum, int User) {
 	
 	//print the information
 	cout << endl << "Suggested friends are for user " << User << " are: \n";
+	
 	for (int c = 0; c < NumFriendSuggestions; ++c) {
 		cout << FriendSuggests[c][0] << " with " << FriendSuggests[c][1] << " friends common"<<endl;
 	}
