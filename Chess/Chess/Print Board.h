@@ -42,7 +42,7 @@ void PrintRow(char Board[][BoardLenght], int RowNum, int cellheight, int cellwid
 		//outputs labels
 		SetConsoleTextAttribute(hConsole, 15);
 		if (x + 1 == cellheight / 2) {
-			cout << "  " << RowNum;
+			cout << "  " << RowNum+1 ;
 		}
 
 		cout << endl;

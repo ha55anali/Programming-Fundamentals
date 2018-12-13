@@ -120,6 +120,7 @@
   <ItemGroup>
     <ClInclude Include="constants.h" />
     <ClInclude Include="init Board.h" />
+    <ClInclude Include="Pieces.h" />
     <ClInclude Include="Print Board.h" />
   </ItemGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.targets" />
