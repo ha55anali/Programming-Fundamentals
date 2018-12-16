@@ -118,8 +118,13 @@
     <ClCompile Include="Source.cpp" />
   </ItemGroup>
   <ItemGroup>
+    <ClInclude Include="Check.h" />
+    <ClInclude Include="CheckMate.h" />
     <ClInclude Include="constants.h" />
+    <ClInclude Include="Front End.h" />
     <ClInclude Include="init Board.h" />
+    <ClInclude Include="General Functions.h" />
+    <ClInclude Include="Piece Movement.h" />
     <ClInclude Include="Pieces.h" />
     <ClInclude Include="Print Board.h" />
   </ItemGroup>

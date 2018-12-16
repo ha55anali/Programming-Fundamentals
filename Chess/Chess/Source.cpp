@@ -5,46 +5,14 @@
 #include "init Board.h"
 #include "Print Board.h"
 #include "Pieces.h"
+#include "Front End.h"
+#include "CheckMate.h"
 
 using namespace std;
-
-bool CheckFormat(char arr[]) {
-	//lenght check
-	if (strlen(arr) != 2)
-		return 0;
-
-	//checks column
-	if (!(arr[0] >= 'a' && arr[0] <= 'h'))
-		return 0;
-
-	//checks row
-	if (!(arr[1] >= '1' && arr[1] <= '8'))
-		return 0;
-
-	return 1;
-}
-
-int * InputCordinate() {
-	char buff[100];
-	cin >> buff;
-
-	while (CheckFormat(buff) == 0) {
-		cout << "Invalid Enter Again: ";
-		cin >> buff;
-	}
-
-	int *Cord = new int[2];
-	Cord[1] = buff[0]-'a';
-	Cord[0] = buff[1] - '1';
-
-	return Cord;
-}
 
 
 
 int main() {
-	HANDLE hConsole = GetStdHandle(STD_OUTPUT_HANDLE);
-
 	char Board[BoardLenght][BoardLenght];
 
 	int EnpassantArr[BoardLenght*2][2];
@@ -55,45 +23,62 @@ int main() {
 
 	initBoard(Board);
 
-	PrintBoard(Board);
-
 	/*InputCordinate();*/
 
-	int start[2] = { 1,1 };
-	int end[2] = { 3,1 };
+	int * Start;
+	int * End;
 	
+	bool Mate = 0;
 	bool Player = white;
-	while (true) {
-		cout << "\n Plyaer" << Player << endl;
-		int*test = InputCordinate();
-		cout << endl << test[0] << " " << test[1];
 
-		int*test2 = InputCordinate();
-		cout << endl << test2[0] << " " << test2[1];
-
-		switch (Board[test[0]][test[1]])
-		{
-		case 'p':MovePawn(Board, test, test2, EnpassantArr, Player); break;
-
-		case 'P':MovePawn(Board, test, test2, EnpassantArr, Player); break;
-
-		case 'r':MoveRook(Board, test, test2, Player); break;
-
-		case 'R':MoveRook(Board, test, test2, Player); break;
-
-		case 'b':MoveBishop(Board, test, test2, Player); break;
-
-		case 'n':MoveKnight(Board, test, test2, Player); break;
-
-		case 'N':MoveKnight(Board, test, test2, Player); break;
-
-		case 'q':MoveQueen(Board, test, test2, Player); break;
-
-		default:
-			break;
-		}
-
+	while (Mate==0) {
+		
 		PrintBoard(Board);
+
+		if (Check(Board, EnpassantArr, Player) == 1) {
+
+			if (CheckMate(Board, EnpassantArr, Player) == 1) {
+				Mate = 1;
+				break;
+			}
+
+			cout << "Check" << endl;
+
+			cout << "Player " << Player << "'s Turn:\nInput Starting Cord: ";
+			Start = InputCordinate();
+			cout << "Enter ending cord ";
+			End = InputCordinate();
+
+			while (isCheckRemoved(Board, Start, End, EnpassantArr, Player) == 0) {
+
+				cout << "Please remove check";
+
+				cout << "Player " << Player << "'s Turn:\nInput Starting Cord: ";
+				Start = InputCordinate();
+				cout << "Enter ending cord ";
+				End = InputCordinate();
+			}
+		}
+		else {
+
+			cout << "Player " << Player << "'s Turn:\nInput Starting Cord: ";
+			Start = InputCordinate();
+			cout << "Enter ending cord ";
+			End = InputCordinate();
+
+			char Piece = Board[Start[0]][Start[1]];
+
+			while (MovePiece(Board, Piece, Start, End, EnpassantArr, Player) == 0) {
+				cout << "Invalid move\n";
+
+				cout << "Player " << Player << "'s Turn:\nInput Starting Cord: ";
+				Start = InputCordinate();
+				cout << "Enter ending cord ";
+				End = InputCordinate();
+
+				char Piece = Board[Start[0]][Start[1]];
+			}
+		}
 
 		if (Player == white) {
 			Player = black;

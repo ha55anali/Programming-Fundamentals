@@ -42,7 +42,7 @@ void PrintRow(char Board[][BoardLenght], int RowNum, int cellheight, int cellwid
 		//outputs labels
 		SetConsoleTextAttribute(hConsole, 15);
 		if (x + 1 == cellheight / 2) {
-			cout << "  " << RowNum+1 ;
+			cout << "  " << 8-(RowNum) ;
 		}
 
 		cout << endl;
@@ -55,6 +55,7 @@ void PrintBoard(char Board[][BoardLenght]) {
 	int cellheight = cellwidth / 2;
 
 	//prints alphabetical labels
+	cout << endl;
 	for (int x = 0; x < BoardLenght; ++x) {
 		for (int c = 0; c + 1 < cellwidth / 2; ++c) {
 			cout << " ";
@@ -70,4 +71,16 @@ void PrintBoard(char Board[][BoardLenght]) {
 	for (int row = 0; row < BoardLenght; ++row) {
 		PrintRow(Board, row, cellheight, cellwidth);
 	}
+
+	//prints alphabetical labels
+	for (int x = 0; x < BoardLenght; ++x) {
+		for (int c = 0; c + 1 < cellwidth / 2; ++c) {
+			cout << " ";
+		}
+		cout << (char)('A' + x);
+		for (int c = 0; c < cellwidth / 2; ++c) {
+			cout << " ";
+		}
+	}
+	cout << endl << endl;
 }

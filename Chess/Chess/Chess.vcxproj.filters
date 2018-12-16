@@ -32,5 +32,20 @@
     <ClInclude Include="Pieces.h">
       <Filter>Header Files</Filter>
     </ClInclude>
+    <ClInclude Include="General Functions.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="Piece Movement.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="Check.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="CheckMate.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="Front End.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
   </ItemGroup>
 </Project>
