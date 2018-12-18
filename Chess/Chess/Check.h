@@ -3,38 +3,11 @@
 #include "constants.h"
 #include "General Functions.h"
 #include "Pieces.h"
+#include "MovePiece.h"
 
-bool MovePiece(char Board[][BoardLenght], char Piece, int Cord[], int EndCord[], int EnpassantArr[][2], bool Player) {
-	switch (Piece)
-	{
-	case 'p':return MovePawn(Board, Cord, EndCord, EnpassantArr, Player); break;
-
-	case 'P':return MovePawn(Board, Cord, EndCord, EnpassantArr, Player); break;
-
-	case 'r':return MoveRook(Board, Cord, EndCord, Player); break;
-
-	case 'R':return MoveRook(Board, Cord, EndCord, Player); break;
-
-	case 'b':return MoveBishop(Board, Cord, EndCord, Player); break;
-
-	case 'B':return MoveBishop(Board, Cord, EndCord, Player); break;
-
-	case 'n':return MoveKnight(Board, Cord, EndCord, Player); break;
-
-	case 'N':return MoveKnight(Board, Cord, EndCord, Player); break;
-
-	case 'q':return MoveQueen(Board, Cord, EndCord, Player); break;
-
-	case 'Q':return MoveQueen(Board, Cord, EndCord, Player); break;
-
-	default:
-		return 0;
-		break;
-	}
-}
 
 //return all possible moves of the passed piece
-int ** ReturnMovesOfPiece(char Board[][BoardLenght], char Piece, int Cord[], int EnpassantArr[][2], bool Player) {
+int ** ReturnMovesOfPiece(char Board[][BLenght], char Piece, int Cord[], bool Player, IncludeSpecialArr) {
 	int PlayerModifier = !Player * ('a' - 'A');
 
 	if (Piece == 'p' - PlayerModifier) {
@@ -52,13 +25,16 @@ int ** ReturnMovesOfPiece(char Board[][BoardLenght], char Piece, int Cord[], int
 	else if (Piece == 'q' - PlayerModifier) {
 		return QueenMoves(Board, Cord, Player);
 	}
+	else if (Piece == 'k' - PlayerModifier) {
+		return KingMoves(Board, Cord, Player,PassSpecialArr);
+	}
 	else {
 		return nullptr;
 	}
 }
 
 //returns KingAttack Array. Array with all the possible attacks of the opponent team
-int ** FindCheckedBy(char Board[][BoardLenght], int EnpassantArr[][2], int Player) {
+int ** FindCheckedBy(char Board[][BLenght], int Player, IncludeSpecialArr) {
 
 	int ** KingAttack = CreateArrMoves();
 	int ** PieceMoves = nullptr;
@@ -66,15 +42,15 @@ int ** FindCheckedBy(char Board[][BoardLenght], int EnpassantArr[][2], int Playe
 	int TempCord[2];
 	char Piece;
 
-	for (int row = 0; row < BoardLenght; ++row) {
+	for (int row = 0; row < BLenght; ++row) {
 
-		for (int col = 0; col < BoardLenght; ++col) {
+		for (int col = 0; col < BLenght; ++col) {
 
 			TempCord[0] = row;
 			TempCord[1] = col;
 			Piece = Board[row][col];
 
-			PieceMoves= ReturnMovesOfPiece(Board, Piece, TempCord, EnpassantArr, !Player);
+			PieceMoves= ReturnMovesOfPiece(Board, Piece, TempCord, !Player,PassSpecialArr);
 
 			if (PieceMoves != nullptr) {
 				CombineArr(KingAttack, PieceMoves, Piece);
@@ -89,10 +65,10 @@ int ** FindCheckedBy(char Board[][BoardLenght], int EnpassantArr[][2], int Playe
 	return KingAttack;
 }
 
-bool Check(char Board[][BoardLenght], int EnpassantArr[][2], int Player) {
+bool Check(char Board[][BLenght] ,int Player,IncludeSpecialArr) {
 
 	bool Check;
-	int ** KingAttack = FindCheckedBy(Board, EnpassantArr, Player);
+	int ** KingAttack = FindCheckedBy(Board, Player,PassSpecialArr);
 
 	int * KingPos = FindKingCord(Board, Player);
 
@@ -109,23 +85,29 @@ bool Check(char Board[][BoardLenght], int EnpassantArr[][2], int Player) {
 	return Check;
 }
 
-bool isCheckRemoved(char Board[][BoardLenght],int Start[],int End[],int EnpassantArr[][2],int Player) {
+bool isCheckRemoved(char Board[][BLenght],int Start[],int End[],int Player,IncludeSpecialArr) {
 
 	//create copies of variables
-	char BoardCopy[BoardLenght][BoardLenght];
-	int EnpassantCopy[2 * BoardLenght][2];
+	char BoardCopy[BLenght][BLenght];
+	int EnpassantCopy[2 * BLenght][2];
+	bool KingMoveCopy[2];
+	bool RookMoveCopy[2][2];
 
 	ArrCopy(Board, BoardCopy);
 	CopyEnpassant(EnpassantArr, EnpassantCopy);
+	CopyKingMove(KingMove, KingMoveCopy);
+	CopyRookMove(RookMove, RookMoveCopy);
 
 	char Piece = Board[Start[0]][Start[1]];
 
-	MovePiece(BoardCopy, Piece, Start, End, EnpassantCopy, Player);
+	MovePiece(BoardCopy, Piece, Start, End, Player,EnpassantCopy,KingMoveCopy,RookMoveCopy);
 
-	if (Check(BoardCopy, EnpassantCopy, Player) == 0) {
+	if (Check(BoardCopy, Player,EnpassantCopy, KingMoveCopy,RookMoveCopy) == 0) {
 
 		ArrCopy(BoardCopy, Board);
 		CopyEnpassant(EnpassantCopy, EnpassantArr);
+		CopyKingMove(KingMoveCopy, KingMove);
+		CopyRookMove(RookMoveCopy, RookMove);
 
 		return 1;
 	}

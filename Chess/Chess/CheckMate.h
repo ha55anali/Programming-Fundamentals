@@ -2,46 +2,22 @@
 
 #include "constants.h"
 #include "Check.h"
-//
-//void MovePiece(char Board[][BoardLenght],char Piece,int Cord[],int EndCord[],int EnpassantArr[][2],bool Player) {
-//	switch (Piece)
-//	{
-//	case 'p':MovePawn(Board, Cord, EndCord, EnpassantArr, Player); break;
-//
-//	case 'P':MovePawn(Board, Cord, EndCord, EnpassantArr, Player); break;
-//
-//	case 'r':MoveRook(Board, Cord, EndCord, Player); break;
-//
-//	case 'R':MoveRook(Board, Cord, EndCord, Player); break;
-//
-//	case 'b':MoveBishop(Board, Cord, EndCord, Player); break;
-//
-//	case 'B':MoveBishop(Board, Cord, EndCord, Player); break;
-//
-//	case 'n':MoveKnight(Board, Cord, EndCord, Player); break;
-//
-//	case 'N':MoveKnight(Board, Cord, EndCord, Player); break;
-//
-//	case 'q':MoveQueen(Board, Cord, EndCord, Player); break;
-//
-//	case 'Q':MoveQueen(Board, Cord, EndCord, Player); break;
-//
-//	default:
-//		break;
-//	}
-//}
+#include "Piece Movement.h"
+
 
 //Simulates the movement of the passed piece. Returns 1 if check can be removed
-bool CheckRemoval(char Board[][BoardLenght], int *Cord, char Piece, int Player, int EnpassantArr[][2]) {
+bool CheckRemoval(char Board[][BLenght], int *Cord, char Piece, int Player,IncludeSpecialArr) {
 	int EndCord[2];
 	int ** PieceMoves = nullptr;
 
 	//create copies of variables
-	char BoardCopy[BoardLenght][BoardLenght];
-	int EnpassantCopy[2 * BoardLenght][2];
+	char BoardCopy[BLenght][BLenght];
+	int EnpassantCopy[2 * BLenght][2];
+	bool KingMoveCopy[2];
+	bool RookMoveCopy[2][2];
 
 	//Returns all possible moves of the piece
-	PieceMoves=ReturnMovesOfPiece(Board, Piece, Cord, EnpassantArr, Player);
+	PieceMoves=ReturnMovesOfPiece(Board, Piece, Cord, Player, PassSpecialArr);
 
 	PrintArr(PieceMoves);
 
@@ -50,22 +26,24 @@ bool CheckRemoval(char Board[][BoardLenght], int *Cord, char Piece, int Player, 
 	}
 
 	//one by one tries all the possible moves of the piece
-	for (int row = 0; row < BoardLenght; ++row) {
+	for (int row = 0; row < BLenght; ++row) {
 
-		for (int col = 0; col < BoardLenght; ++col) {
+		for (int col = 0; col < BLenght; ++col) {
 
 			if (PieceMoves[row][col] != 0) {
 
 				ArrCopy(Board, BoardCopy);
 				CopyEnpassant(EnpassantArr, EnpassantCopy);
+				CopyKingMove(KingMove, KingMoveCopy);
+				CopyRookMove(RookMove, RookMoveCopy);
 
 				EndCord[0] = row;
 				EndCord[1] = col;
 
-				MovePiece(BoardCopy, Piece, Cord, EndCord, EnpassantCopy, Player);
+				MovePiece(BoardCopy, Piece, Cord, EndCord, Player, EnpassantCopy,KingMoveCopy,RookMoveCopy);
 
 				//if check is removed return 1
-				if (Check(BoardCopy, EnpassantCopy, Player) == 0) {
+				if (Check(BoardCopy, Player, EnpassantCopy, KingMoveCopy, RookMoveCopy) == 0) {
 					DeleteMovesArr(PieceMoves);
 					return 1;
 				}
@@ -79,15 +57,15 @@ bool CheckRemoval(char Board[][BoardLenght], int *Cord, char Piece, int Player, 
 
 //Checks if check can be removed by moving king
 //checks all the moves of king
-bool CheckKingMovement(char Board[][BoardLenght],int * KingPos,int ** KingAttack,int Player) {
+bool CheckKingMovement(char Board[][BLenght],int * KingPos,int ** KingAttack,int Player) {
 
-	int KingMove[BoardLenght][BoardLenght];
+	int KingMove[BLenght][BLenght];
 	ArrCopy(KingAttack, KingMove);
 
 	//prevents king from moving to same color pieces
-	for (int row = 0; row < BoardLenght; ++row) {
+	for (int row = 0; row < BLenght; ++row) {
 
-		for (int col = 0; col < BoardLenght; ++col){
+		for (int col = 0; col < BLenght; ++col){
 
 			if (ColorCheck(Board[row][col]) == Player) {
 				KingMove[row][col] = 1;
@@ -113,37 +91,30 @@ bool CheckKingMovement(char Board[][BoardLenght],int * KingPos,int ** KingAttack
 	return 1;
 }
 
-bool CheckMate(char Board[][BoardLenght], int EnpassantArr[][2], int Player) {
+bool CheckMate(char Board[][BLenght], int Player,IncludeSpecialArr) {
 	bool Mate = 1;
 
-	int ** KingAttack = FindCheckedBy(Board, EnpassantArr, Player);
+	int ** KingAttack = FindCheckedBy(Board, Player,PassSpecialArr);
 	int *KingPos = FindKingCord(Board, Player);
 
-	//check is the king can move
-	Mate = CheckKingMovement(Board, KingPos, KingAttack, Player);
+	//checks if movement of any other piece can remove check
+	int TempCord[2];
 
-	//if Mate if 0, then checkmate is not possible
-	if (Mate == 1) {
+	for (int row = 0; row < BLenght; ++row) {
 
-		//checks if movement of any other piece can remove check
-		int TempCord[2];
+		for (int col = 0; col < BLenght; ++col) {
 
-		for (int row = 0; row < BoardLenght; ++row) {
+			char Piece = Board[row][col];
+			TempCord[0] = row;
+			TempCord[1] = col;
 
-			for (int col = 0; col < BoardLenght; ++col) {
-
-				char Piece = Board[row][col];
-				TempCord[0] = row;
-				TempCord[1] = col;
-
-				//if Piece is of Player, Check its movement
-				if (ColorCheck(Piece) == Player) {
-					if (CheckRemoval(Board, TempCord, Piece, Player, EnpassantArr) == 1) {
-						Mate = 0;
-					}
+			//if Piece is of Player, Check its movement
+			if (ColorCheck(Piece) == Player) {
+				if (CheckRemoval(Board, TempCord, Piece, Player,PassSpecialArr) == 1) {
+					Mate = 0;
 				}
-
 			}
+
 		}
 	}
 

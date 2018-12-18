@@ -47,5 +47,14 @@
     <ClInclude Include="Front End.h">
       <Filter>Header Files</Filter>
     </ClInclude>
+    <ClInclude Include="MovePiece.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="Draw.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="Save Load.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
   </ItemGroup>
 </Project>

@@ -1,13 +1,14 @@
 #pragma once
 
 #include "constants.h"
+#include "Pieces.h"
 
 
 //Takes a cordinate and player color as input
 //if piece on cordinate is the same color as player, 1 is returned
 //if piece is a different color -1 is returned
 //if cordinate is empty 0 is returned
-int SquareCheck(char Board[][BoardLenght], int Cord[], bool Player) {
+int SquareCheck(char Board[][BLenght], int Cord[], bool Player) {
 	char Piece = Board[Cord[0]][Cord[1]];
 
 	if (Piece == ' ') {
@@ -31,7 +32,7 @@ int SquareCheck(char Board[][BoardLenght], int Cord[], bool Player) {
 /*Takes a cordinate as input
 Writes to an array moves if the move is Valid, kill or not valid
 */
-bool PossibleMove(char Board[][BoardLenght], int ** Moves, int Temp[], int Player) {
+bool PossibleMove(char Board[][BLenght], int ** Moves, int Temp[], int Player) {
 	if (SquareCheck(Board, Temp, Player) == 0) {
 		Moves[Temp[0]][Temp[1]] = ValidMove;
 		return 1;
@@ -47,12 +48,12 @@ bool PossibleMove(char Board[][BoardLenght], int ** Moves, int Temp[], int Playe
 
 /*Takes an 8x8 array and cordinate as input
 writes to array all the valid vertical and horizontal moves*/
-void VerticalHorizontalMoves(char Board[][BoardLenght], int ** Moves, int Start[], int Player) {
+void VerticalHorizontalMoves(char Board[][BLenght], int ** Moves, int Start[], int Player) {
 	int Temp[2];
 
 	//checks moves to the North
 	Temp[1] = Start[1];
-	for (int Row = Start[0] + 1; Row < BoardLenght; ++Row) {
+	for (int Row = Start[0] + 1; Row < BLenght; ++Row) {
 		Temp[0] = Row;
 		if (PossibleMove(Board, Moves, Temp, Player) == 0) {
 			break;
@@ -69,7 +70,7 @@ void VerticalHorizontalMoves(char Board[][BoardLenght], int ** Moves, int Start[
 
 	//checks moves to the East
 	Temp[0] = Start[0];
-	for (int Col = Start[1] + 1; Col < BoardLenght; ++Col) {
+	for (int Col = Start[1] + 1; Col < BLenght; ++Col) {
 		Temp[1] = Col;
 		if (PossibleMove(Board, Moves, Temp, Player) == 0) {
 			break;
@@ -87,13 +88,13 @@ void VerticalHorizontalMoves(char Board[][BoardLenght], int ** Moves, int Start[
 }
 
 /*writes to array all the possible diagional moves*/
-void DiagonalMoves(char Board[][BoardLenght], int ** Moves, int Start[], int Player) {
+void DiagonalMoves(char Board[][BLenght], int ** Moves, int Start[], int Player) {
 
 	//stores cord to be tested
 	int Temp[2];
 
 	//checks South East
-	for (int row = Start[0] + 1, col = Start[1] + 1; row < BoardLenght && col < BoardLenght; ++row, ++col) {
+	for (int row = Start[0] + 1, col = Start[1] + 1; row < BLenght && col < BLenght; ++row, ++col) {
 		Temp[0] = row;
 		Temp[1] = col;
 		if (PossibleMove(Board, Moves, Temp, Player) == 0) {
@@ -102,7 +103,7 @@ void DiagonalMoves(char Board[][BoardLenght], int ** Moves, int Start[], int Pla
 	}
 
 	//checks North East
-	for (int row = Start[0] - 1, col = Start[1] + 1; row >= 0 && col < BoardLenght; --row, ++col) {
+	for (int row = Start[0] - 1, col = Start[1] + 1; row >= 0 && col < BLenght; --row, ++col) {
 		Temp[0] = row;
 		Temp[1] = col;
 		if (PossibleMove(Board, Moves, Temp, Player) == 0) {
@@ -120,7 +121,7 @@ void DiagonalMoves(char Board[][BoardLenght], int ** Moves, int Start[], int Pla
 	}
 
 	//checks South West
-	for (int row = Start[0] + 1, col = Start[1] - 1; col >= 0 && row < BoardLenght; --col, ++row) {
+	for (int row = Start[0] + 1, col = Start[1] - 1; col >= 0 && row < BLenght; --col, ++row) {
 		Temp[0] = row;
 		Temp[1] = col;
 		if (PossibleMove(Board, Moves, Temp, Player) == 0) {

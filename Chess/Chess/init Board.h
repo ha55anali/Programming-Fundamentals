@@ -7,7 +7,7 @@
 using namespace std;
 
 
-void initLastRow(char Board[][BoardLenght], bool Player) {
+void initLastRow(char Board[][BLenght], bool Player) {
 	int Temp;
 	int row;
 
@@ -33,7 +33,7 @@ void initLastRow(char Board[][BoardLenght], bool Player) {
 	Board[row][4] = 'k' + Temp;
 }
 
-void initPawnRow(char Board[][BoardLenght], int Player) {
+void initPawnRow(char Board[][BLenght], int Player) {
 	int row;
 	int Temp;
 
@@ -46,20 +46,20 @@ void initPawnRow(char Board[][BoardLenght], int Player) {
 		Temp = 0;
 	}
 
-	for (int col = 0; col < BoardLenght; ++col) {
+	for (int col = 0; col < BLenght; ++col) {
 		Board[row][col] = 'p' + Temp;
 	}
 }
 
-void initEmptySpaces(char Board[][BoardLenght]) {
-	for (int row = 2; row < BoardLenght - 2; ++row) {
-		for (int col = 0; col < BoardLenght; ++col) {
+void initEmptySpaces(char Board[][BLenght]) {
+	for (int row = 2; row < BLenght - 2; ++row) {
+		for (int col = 0; col < BLenght; ++col) {
 			Board[row][col] = ' ';
 		}
 	}
 }
 
-void initBoard(char Board[][BoardLenght]) {
+void initBoard(char Board[][BLenght]) {
 	initLastRow(Board, white);
 	initLastRow(Board, black);
 

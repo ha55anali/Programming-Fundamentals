@@ -6,7 +6,7 @@
 
 using namespace std;
 
-void PrintRow(char Board[][BoardLenght], int RowNum, int cellheight, int cellwidth) {
+void PrintRow(char Board[][BLenght], int RowNum, int cellheight, int cellwidth) {
 	HANDLE hConsole = GetStdHandle(STD_OUTPUT_HANDLE);
 
 	bool Flag; //checks whether the row has white first or black cell first
@@ -17,7 +17,7 @@ void PrintRow(char Board[][BoardLenght], int RowNum, int cellheight, int cellwid
 
 	for (int x = 0; x < cellheight; ++x) {
 
-		for (int col = 0; col < BoardLenght; ++col) {
+		for (int col = 0; col < BLenght; ++col) {
 
 			//set color of the cell
 			if (col % 2 == Flag) {
@@ -49,14 +49,14 @@ void PrintRow(char Board[][BoardLenght], int RowNum, int cellheight, int cellwid
 	}
 }
 
-void PrintBoard(char Board[][BoardLenght]) {
+void PrintBoard(char Board[][BLenght]) {
 
 	int cellwidth = 8;
 	int cellheight = cellwidth / 2;
 
 	//prints alphabetical labels
 	cout << endl;
-	for (int x = 0; x < BoardLenght; ++x) {
+	for (int x = 0; x < BLenght; ++x) {
 		for (int c = 0; c + 1 < cellwidth / 2; ++c) {
 			cout << " ";
 		}
@@ -68,12 +68,12 @@ void PrintBoard(char Board[][BoardLenght]) {
 	cout << endl << endl;
 
 
-	for (int row = 0; row < BoardLenght; ++row) {
+	for (int row = 0; row < BLenght; ++row) {
 		PrintRow(Board, row, cellheight, cellwidth);
 	}
 
 	//prints alphabetical labels
-	for (int x = 0; x < BoardLenght; ++x) {
+	for (int x = 0; x < BLenght; ++x) {
 		for (int c = 0; c + 1 < cellwidth / 2; ++c) {
 			cout << " ";
 		}
