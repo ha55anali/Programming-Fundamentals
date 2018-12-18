@@ -31,6 +31,7 @@ bool MovePiece(char Board[][BLenght], char Piece, int Cord[], int EndCord[], boo
 
 	default:
 		return 0;
-		break;
 	}
+
+	return 1;
 }

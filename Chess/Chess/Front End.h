@@ -116,6 +116,7 @@ void MainLoop(char Board[][BLenght],IncludeSpecialArr) {
 
 	bool Mate = 0;
 	bool Stale = 0;
+	bool DrawPiece = 0;
 	bool Player = white;
 
 	LoadGameFrontEnd(Board,Player, PassSpecialArr);
@@ -135,8 +136,13 @@ void MainLoop(char Board[][BLenght],IncludeSpecialArr) {
 		}
 		//no check, procede as normal
 		else {
-			if (Stalemate(Board, Player, PassSpecialArr) == 1) {
+			int temp = Draw(Board, Player, PassSpecialArr);
+			if (temp==1) {
 				Stale = 1;
+				break;
+			}
+			if (temp == 2) {
+				DrawPiece = 1;
 				break;
 			}
 
@@ -149,7 +155,9 @@ void MainLoop(char Board[][BLenght],IncludeSpecialArr) {
 				cout << "Invalid move\n";
 
 				InputStartEndCord(Board, Start, End, Player, PassSpecialArr);
-				char Piece = Board[Start[0]][Start[1]];
+
+				Piece = Board[Start[0]][Start[1]];
+				
 			}
 		}
 
@@ -178,6 +186,9 @@ void MainLoop(char Board[][BLenght],IncludeSpecialArr) {
 	}
 	if (Stale == 1) {
 		cout << endl << "Stalemate";
+	}
+	if (DrawPiece == 1) {
+		cout << endl << "draw, insufficient pieces to checkmate";
 	}
 
 

@@ -81,3 +81,35 @@ bool Stalemate(char Board[][BLenght], bool Player, IncludeSpecialArr) {
 
 	return Stale;
 }
+
+bool DrawByPiece(char Board[][BLenght]) {
+	bool draw = 1;
+
+	//checks for king and king
+	for (int row = 0; row < BLenght; ++row) {
+
+		for (int col = 0; col < BLenght; ++col) {
+
+			if (!(Board[row][col] == 'k' || Board[row][col] == 'K' || Board[row][col]==' ')) {
+				draw = 0;
+			}
+		}
+	}
+	if (draw == 1) {
+		return 1;
+	}
+
+	return 0;
+}
+
+int Draw(char Board[][BLenght], bool Player, IncludeSpecialArr) {
+	if (Stalemate(Board, Player, PassSpecialArr) == 1) {
+		return 1;
+	}
+
+	if (DrawByPiece(Board) == 1) {
+		return 2;
+	}
+
+	return 0;
+}

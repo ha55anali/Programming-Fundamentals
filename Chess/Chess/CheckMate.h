@@ -19,8 +19,6 @@ bool CheckRemoval(char Board[][BLenght], int *Cord, char Piece, int Player,Inclu
 	//Returns all possible moves of the piece
 	PieceMoves=ReturnMovesOfPiece(Board, Piece, Cord, Player, PassSpecialArr);
 
-	PrintArr(PieceMoves);
-
 	if (PieceMoves == nullptr) {
 		return 0;
 	}
@@ -73,7 +71,6 @@ bool CheckKingMovement(char Board[][BLenght],int * KingPos,int ** KingAttack,int
 		}
 	}
 	cout << endl << "King move" << endl;
-	PrintArr(KingMove);
 
 	int TempCord[2];
 	for (int c = -1; c <= 1; c = c + 2) {
